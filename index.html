@@ -624,6 +624,122 @@ body {
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ===== OWNER LOCK ===== */
+.owner-nav-wrap { position: relative; }
+.owner-lock-banner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 20px;
+  font-size: 11px;
+  color: var(--text3);
+  background: var(--bg3);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.owner-unlock-btn {
+  background: none;
+  border: 1px solid var(--border2);
+  color: var(--accent2);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: all 0.15s;
+}
+.owner-unlock-btn:hover { border-color: var(--accent); }
+.owner-nav-locked { opacity: 0.35; pointer-events: none; filter: blur(1px); }
+.owner-lock-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  color: var(--text3);
+  font-size: 11px;
+  cursor: pointer;
+  padding: 8px 20px;
+  width: 100%;
+  font-family: var(--font-body);
+  transition: color 0.15s;
+}
+.owner-lock-btn:hover { color: var(--danger); }
+
+/* PIN MODAL */
+.pin-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+.pin-overlay.hidden { display: none; }
+.pin-box {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px 28px;
+  width: 300px;
+  text-align: center;
+}
+.pin-title {
+  font-family: var(--font-head);
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.pin-sub { font-size: 13px; color: var(--text3); margin-bottom: 24px; }
+.pin-dots {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.pin-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--border2);
+  background: transparent;
+  transition: all 0.15s;
+}
+.pin-dot.filled { background: var(--accent); border-color: var(--accent); }
+.pin-keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.pin-key {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  font-family: var(--font-head);
+  cursor: pointer;
+  transition: all 0.1s;
+}
+.pin-key:hover { background: var(--surface); border-color: var(--border2); }
+.pin-key:active { transform: scale(0.94); }
+.pin-error { color: var(--danger); font-size: 12px; margin-top: 8px; min-height: 18px; }
+.pin-cancel {
+  background: none;
+  border: none;
+  color: var(--text3);
+  font-size: 13px;
+  cursor: pointer;
+  margin-top: 8px;
+  font-family: var(--font-body);
+}
+.pin-cancel:hover { color: var(--text); }
+
 /* ===== NAV SECTIONS ===== */
 .nav-section { flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding-bottom: 8px; }
 .nav-section-label {
@@ -835,31 +951,46 @@ body {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           Stock Count
         </a></li>
+        <li><a href="#" class="nav-item" data-page="history">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          History
+        </a></li>
       </ul>
       <div class="nav-divider"></div>
-      <div class="nav-section-label">Owner</div>
-      <ul class="nav-links">
-        <li><a href="#" class="nav-item" data-page="dashboard">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-          Dashboard
-        </a></li>
-        <li><a href="#" class="nav-item" data-page="inventory">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-          Inventory
-        </a></li>
-        <li><a href="#" class="nav-item" data-page="recipes">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M12 8v4l3 3"/></svg>
-          Recipe Costs
-        </a></li>
-        <li><a href="#" class="nav-item" data-page="usage">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          Usage Logs
-        </a></li>
-        <li><a href="#" class="nav-item" data-page="orders">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-          Purchase Orders
-        </a></li>
-      </ul>
+      <div class="nav-section-label owner-label">Owner</div>
+      <div class="owner-nav-wrap" id="owner-nav-wrap">
+        <div class="owner-lock-banner" id="owner-lock-banner">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Owner only &nbsp;·&nbsp;
+          <button class="owner-unlock-btn" onclick="promptOwnerPin()">Unlock</button>
+        </div>
+        <ul class="nav-links owner-nav-locked" id="owner-nav-links">
+          <li><a href="#" class="nav-item" data-page="dashboard">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            Dashboard
+          </a></li>
+          <li><a href="#" class="nav-item" data-page="inventory">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            Inventory
+          </a></li>
+          <li><a href="#" class="nav-item" data-page="recipes">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M12 8v4l3 3"/></svg>
+            Recipe Costs
+          </a></li>
+          <li><a href="#" class="nav-item" data-page="usage">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            Usage Logs
+          </a></li>
+          <li><a href="#" class="nav-item" data-page="orders">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            Purchase Orders
+          </a></li>
+        </ul>
+        <button class="owner-lock-btn hidden" id="owner-lock-btn" onclick="lockOwner()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Lock owner section
+        </button>
+      </div>
     </nav>
     <div class="sidebar-footer">
       <button class="btn-settings" onclick="openSettings()">⚙ Settings</button>
@@ -885,7 +1016,7 @@ body {
     <div id="alert-bar" class="alert-bar hidden"></div>
 
     <!-- DASHBOARD PAGE -->
-    <section id="page-dashboard" class="page active">
+    <section id="page-dashboard" class="page">
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-label">Total Ingredients</div>
@@ -1013,7 +1144,7 @@ body {
     </section>
 
     <!-- STAFF COUNT PAGE -->
-    <section id="page-staffcount" class="page">
+    <section id="page-staffcount" class="page active">
       <div id="staffcount-name-banner" class="staff-name-banner">
         <div class="staff-name-prompt">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -1112,7 +1243,52 @@ body {
           </button>
         </div>
       </div>
+
+    <!-- HISTORY PAGE -->
+    <section id="page-history" class="page">
+      <div class="toolbar">
+        <input type="date" id="history-date-from" class="search-input" style="max-width:160px" />
+        <span style="color:var(--text3);font-size:13px">to</span>
+        <input type="date" id="history-date-to" class="search-input" style="max-width:160px" />
+        <select id="history-type" class="select-input">
+          <option value="">All types</option>
+          <option value="staffcount">Staff Count</option>
+          <option value="inventory">Inventory Edit</option>
+          <option value="usage">Usage Log</option>
+          <option value="order">Purchase Order</option>
+        </select>
+        <input type="text" id="history-search" class="search-input" placeholder="Search staff / item…" />
+        <button class="btn-primary" onclick="filterHistory()">Search</button>
+        <button class="btn-ghost" onclick="clearHistoryFilter()">Clear</button>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <h3>Inventory & Stock History</h3>
+          <span class="badge badge-ok" id="history-count">0 records</span>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="data-table" id="history-table">
+            <thead>
+              <tr>
+                <th>Date & Time</th>
+                <th>Type</th>
+                <th>Staff</th>
+                <th>Category</th>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Unit</th>
+              </tr>
+            </thead>
+            <tbody id="history-body">
+              <tr><td colspan="7" class="empty-state">No history yet. Save a stock count to begin.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </section>
+
+    <!-- HISTORY PAGE -->
+        </section>
   </main>
 
   <!-- MODALS -->
@@ -1188,6 +1364,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setDate();
   setupNav();
   loadSettings();
+  initStaffCount();
 
   if (CONFIG.scriptUrl) {
     syncData();
@@ -1230,6 +1407,7 @@ function navigateTo(page) {
     usage: 'Usage Logs',
     orders: 'Purchase Orders',
     staffcount: 'Staff Stock Count',
+    history: 'History',
   };
   document.getElementById('page-title').textContent = titles[page] || page;
 }
@@ -2058,6 +2236,7 @@ async function saveStaffCount() {
   saveBtn.disabled = false;
   saveBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Save Stock Count`;
 
+  records.forEach(r => addToHistory('staffcount', staffName, r.category, r.name, r.qty, r.unit));
   document.getElementById('sc-last-saved').innerHTML =
     `<span class="sc-saved-ok">✅ Saved by <strong>${escHtml(staffName)}</strong> at ${datetime} &nbsp;·&nbsp; ${records.length} item(s)</span>`;
 
@@ -2066,6 +2245,171 @@ async function saveStaffCount() {
   setTimeout(hideAlert, 4000);
 }
 
+// ===== OWNER PIN & LOCK =====
+const OWNER_PIN = localStorage.getItem('ownerPin') || '1234';
+let pinBuffer = '';
+let ownerUnlocked = false;
+
+function promptOwnerPin() {
+  pinBuffer = '';
+  updatePinDots();
+  document.getElementById('pin-error').textContent = '';
+  document.getElementById('pin-overlay').classList.remove('hidden');
+}
+
+function closePinModal() {
+  pinBuffer = '';
+  updatePinDots();
+  document.getElementById('pin-overlay').classList.add('hidden');
+}
+
+function pinKey(k) {
+  if (k === 'back')  { pinBuffer = pinBuffer.slice(0,-1); }
+  else if (k === 'clear') { pinBuffer = ''; }
+  else if (pinBuffer.length < 4) { pinBuffer += k; }
+  updatePinDots();
+  if (pinBuffer.length === 4) {
+    setTimeout(() => {
+      if (pinBuffer === OWNER_PIN) {
+        ownerUnlocked = true;
+        document.getElementById('pin-overlay').classList.add('hidden');
+        document.getElementById('owner-lock-banner').classList.add('hidden');
+        document.getElementById('owner-nav-links').classList.remove('owner-nav-locked');
+        document.getElementById('owner-lock-btn').classList.remove('hidden');
+        pinBuffer = '';
+        updatePinDots();
+      } else {
+        document.getElementById('pin-error').textContent = 'Incorrect PIN. Try again.';
+        pinBuffer = '';
+        updatePinDots();
+      }
+    }, 120);
+  }
+}
+
+function updatePinDots() {
+  for (let i = 0; i < 4; i++) {
+    document.getElementById('pd' + i).classList.toggle('filled', i < pinBuffer.length);
+  }
+}
+
+function lockOwner() {
+  ownerUnlocked = false;
+  document.getElementById('owner-lock-banner').classList.remove('hidden');
+  document.getElementById('owner-nav-links').classList.add('owner-nav-locked');
+  document.getElementById('owner-lock-btn').classList.add('hidden');
+  navigateTo('staffcount');
+}
+
+// ===== HISTORY =====
+let HISTORY_DATA = [];
+
+function loadHistory() {
+  // Build from STATE data already synced + localStorage
+  HISTORY_DATA = JSON.parse(localStorage.getItem('historyLog') || '[]');
+  renderHistory(HISTORY_DATA);
+}
+
+function addToHistory(type, staff, category, item, qty, unit) {
+  const now = new Date();
+  const datetime = now.toLocaleDateString('en-GB') + ' ' + now.toLocaleTimeString('en-GB', {hour:'2-digit',minute:'2-digit'});
+  const record = { datetime, type, staff: staff||'—', category: category||'—', item: item||'—', qty: qty||'—', unit: unit||'—' };
+  HISTORY_DATA.unshift(record);
+  if (HISTORY_DATA.length > 500) HISTORY_DATA = HISTORY_DATA.slice(0, 500);
+  localStorage.setItem('historyLog', JSON.stringify(HISTORY_DATA));
+}
+
+function renderHistory(data) {
+  const body = document.getElementById('history-body');
+  const count = document.getElementById('history-count');
+  count.textContent = data.length + ' record' + (data.length !== 1 ? 's' : '');
+  if (data.length === 0) {
+    body.innerHTML = '<tr><td colspan="7" class="empty-state">No records found.</td></tr>';
+    return;
+  }
+  const typeColors = {
+    staffcount: 'badge-ok',
+    inventory:  'badge-warn',
+    usage:      '',
+    order:      'badge-danger',
+  };
+  body.innerHTML = data.map(r => `
+    <tr>
+      <td style="white-space:nowrap;font-size:12px;color:var(--text2)">${escHtml(r.datetime)}</td>
+      <td><span class="badge ${typeColors[r.type]||''}" style="font-size:10px">${escHtml(r.type)}</span></td>
+      <td style="font-weight:500">${escHtml(r.staff)}</td>
+      <td style="color:var(--text2)">${escHtml(r.category)}</td>
+      <td>${escHtml(r.item)}</td>
+      <td style="text-align:right;font-weight:500">${escHtml(String(r.qty))}</td>
+      <td style="color:var(--text3)">${escHtml(r.unit)}</td>
+    </tr>`).join('');
+}
+
+function filterHistory() {
+  const from   = document.getElementById('history-date-from').value;
+  const to     = document.getElementById('history-date-to').value;
+  const type   = document.getElementById('history-type').value;
+  const search = document.getElementById('history-search').value.toLowerCase();
+
+  let data = HISTORY_DATA;
+
+  if (from) data = data.filter(r => {
+    const d = r.datetime.split(' ')[0].split('/').reverse().join('-');
+    return d >= from;
+  });
+  if (to) data = data.filter(r => {
+    const d = r.datetime.split(' ')[0].split('/').reverse().join('-');
+    return d <= to;
+  });
+  if (type)   data = data.filter(r => r.type === type);
+  if (search) data = data.filter(r =>
+    r.staff.toLowerCase().includes(search) ||
+    r.item.toLowerCase().includes(search) ||
+    r.category.toLowerCase().includes(search)
+  );
+
+  renderHistory(data);
+}
+
+function clearHistoryFilter() {
+  document.getElementById('history-date-from').value = '';
+  document.getElementById('history-date-to').value = '';
+  document.getElementById('history-type').value = '';
+  document.getElementById('history-search').value = '';
+  renderHistory(HISTORY_DATA);
+}
+
 </script>
+
+  <!-- PIN Modal -->
+  <div id="pin-overlay" class="pin-overlay hidden">
+    <div class="pin-box">
+      <div class="pin-title">🔐 Owner Access</div>
+      <div class="pin-sub">Enter your 4-digit PIN</div>
+      <div class="pin-dots">
+        <div class="pin-dot" id="pd0"></div>
+        <div class="pin-dot" id="pd1"></div>
+        <div class="pin-dot" id="pd2"></div>
+        <div class="pin-dot" id="pd3"></div>
+      </div>
+      <div class="pin-keypad">
+        <button class="pin-key" onclick="pinKey('1')">1</button>
+        <button class="pin-key" onclick="pinKey('2')">2</button>
+        <button class="pin-key" onclick="pinKey('3')">3</button>
+        <button class="pin-key" onclick="pinKey('4')">4</button>
+        <button class="pin-key" onclick="pinKey('5')">5</button>
+        <button class="pin-key" onclick="pinKey('6')">6</button>
+        <button class="pin-key" onclick="pinKey('7')">7</button>
+        <button class="pin-key" onclick="pinKey('8')">8</button>
+        <button class="pin-key" onclick="pinKey('9')">9</button>
+        <button class="pin-key" onclick="pinKey('back')" style="font-size:14px">⌫</button>
+        <button class="pin-key" onclick="pinKey('0')">0</button>
+        <button class="pin-key" onclick="pinKey('clear')" style="font-size:12px">CLR</button>
+      </div>
+      <div class="pin-error" id="pin-error"></div>
+      <button class="pin-cancel" onclick="closePinModal()">Cancel</button>
+    </div>
+  </div>
+
 </body>
 </html>

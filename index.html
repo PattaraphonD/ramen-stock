@@ -88,11 +88,7 @@ body {
   margin-top: 1px;
 }
 
-.nav-links {
-  list-style: none;
-  padding: 12px 0;
-  flex: 1;
-}
+/* nav-links now defined in nav-section rules */
 
 .nav-item {
   display: flex;
@@ -235,6 +231,7 @@ body {
 }
 
 .alert-bar.hidden { display: none; }
+.alert-bar.success { background: var(--success-dim); border-bottom-color: var(--success); color: var(--success); }
 
 /* ===== PAGES ===== */
 .page {
@@ -627,6 +624,196 @@ body {
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+/* ===== NAV SECTIONS ===== */
+.nav-section { flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding-bottom: 8px; }
+.nav-section-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text3);
+  font-weight: 600;
+  padding: 14px 20px 4px;
+  font-family: var(--font-body);
+}
+.nav-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 10px 16px;
+}
+.nav-links { list-style: none; padding: 2px 0; }
+
+/* ===== STAFF COUNT PAGE ===== */
+.staff-name-banner {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+}
+.staff-name-prompt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 14px;
+  color: var(--text2);
+}
+.staff-name-confirmed {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--accent2);
+  font-family: var(--font-head);
+}
+.staff-name-confirmed.hidden, .hidden { display: none !important; }
+
+.staffcount-body { display: flex; flex-direction: column; gap: 16px; }
+
+.sc-category {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.sc-cat-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg3);
+}
+.sc-cat-icon { font-size: 18px; line-height: 1; }
+.sc-cat-title {
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 700;
+  flex: 1;
+}
+.sc-add-btn {
+  background: none;
+  border: 1px dashed var(--border2);
+  color: var(--text3);
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: all 0.15s;
+}
+.sc-add-btn:hover { border-color: var(--accent); color: var(--accent2); }
+
+.sc-items { padding: 8px 12px 12px; }
+
+.sc-header-row {
+  display: grid;
+  grid-template-columns: 1fr 120px 130px 36px;
+  gap: 8px;
+  padding: 6px 8px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text3);
+}
+
+.sc-item-row {
+  display: grid;
+  grid-template-columns: 1fr 120px 130px 36px;
+  gap: 8px;
+  padding: 6px 0;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+.sc-item-row:last-child { border-bottom: none; }
+
+.sc-item-name {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 7px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: var(--font-body);
+  outline: none;
+  width: 100%;
+  transition: border 0.15s;
+}
+.sc-item-name:focus { border-color: var(--accent); }
+
+.sc-item-qty {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 7px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: var(--font-body);
+  outline: none;
+  width: 100%;
+  text-align: right;
+  transition: border 0.15s;
+}
+.sc-item-qty:focus { border-color: var(--accent); }
+
+.sc-item-unit {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 7px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: var(--font-body);
+  outline: none;
+  width: 100%;
+  cursor: pointer;
+  transition: border 0.15s;
+}
+.sc-item-unit:focus { border-color: var(--accent); }
+.sc-item-unit option { background: var(--bg2); }
+
+.sc-remove-btn {
+  background: none;
+  border: none;
+  color: var(--text3);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sc-remove-btn:hover { color: var(--danger); background: var(--danger-dim); }
+
+.sc-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0 4px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.sc-save-btn { padding: 10px 24px; font-size: 14px; }
+.sc-last-saved { font-size: 12px; color: var(--text3); }
+.sc-saved-ok { color: var(--success); font-size: 13px; }
+
+/* Staff count log table */
+.sc-log-section {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-top: 8px;
+}
+.sc-log-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
   </style>
 </head>
 <body>
@@ -641,28 +828,39 @@ body {
         <div class="brand-sub">Kitchen Manager</div>
       </div>
     </div>
-    <ul class="nav-links">
-      <li><a href="#" class="nav-item active" data-page="dashboard">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-        Dashboard
-      </a></li>
-      <li><a href="#" class="nav-item" data-page="inventory">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-        Inventory
-      </a></li>
-      <li><a href="#" class="nav-item" data-page="recipes">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M12 8v4l3 3"/></svg>
-        Recipe Costs
-      </a></li>
-      <li><a href="#" class="nav-item" data-page="usage">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        Usage Logs
-      </a></li>
-      <li><a href="#" class="nav-item" data-page="orders">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-        Purchase Orders
-      </a></li>
-    </ul>
+    <nav class="nav-section">
+      <div class="nav-section-label">Staff</div>
+      <ul class="nav-links">
+        <li><a href="#" class="nav-item active" data-page="staffcount">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Stock Count
+        </a></li>
+      </ul>
+      <div class="nav-divider"></div>
+      <div class="nav-section-label">Owner</div>
+      <ul class="nav-links">
+        <li><a href="#" class="nav-item" data-page="dashboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          Dashboard
+        </a></li>
+        <li><a href="#" class="nav-item" data-page="inventory">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          Inventory
+        </a></li>
+        <li><a href="#" class="nav-item" data-page="recipes">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M12 8v4l3 3"/></svg>
+          Recipe Costs
+        </a></li>
+        <li><a href="#" class="nav-item" data-page="usage">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          Usage Logs
+        </a></li>
+        <li><a href="#" class="nav-item" data-page="orders">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Purchase Orders
+        </a></li>
+      </ul>
+    </nav>
     <div class="sidebar-footer">
       <button class="btn-settings" onclick="openSettings()">⚙ Settings</button>
     </div>
@@ -813,6 +1011,108 @@ body {
         <div class="empty-state">Loading orders…</div>
       </div>
     </section>
+
+    <!-- STAFF COUNT PAGE -->
+    <section id="page-staffcount" class="page">
+      <div id="staffcount-name-banner" class="staff-name-banner">
+        <div class="staff-name-prompt">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>Staff name:</span>
+          <input type="text" id="staff-name-input" class="form-input" placeholder="Enter your name…" style="max-width:200px;padding:6px 10px;" />
+          <button class="btn-primary" onclick="setStaffName()" style="padding:6px 14px;">Confirm</button>
+          <span id="staff-name-display" class="staff-name-confirmed hidden"></span>
+          <button id="staff-name-change" class="btn-ghost hidden" onclick="changeStaffName()" style="padding:5px 10px;font-size:12px;">Change</button>
+        </div>
+      </div>
+
+      <div id="staffcount-body" class="staffcount-body">
+        <!-- Meat -->
+        <div class="sc-category">
+          <div class="sc-cat-head">
+            <span class="sc-cat-icon">🥩</span><span class="sc-cat-title">Meat</span>
+            <button class="sc-add-btn" onclick="addStaffItem('meat')">+ Add item</button>
+          </div>
+          <div class="sc-items" id="sc-meat">
+            <div class="sc-item-row sc-header-row">
+              <span>Item name</span><span>Qty</span><span>Unit</span><span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vegetables -->
+        <div class="sc-category">
+          <div class="sc-cat-head">
+            <span class="sc-cat-icon">🥦</span><span class="sc-cat-title">Vegetables</span>
+            <button class="sc-add-btn" onclick="addStaffItem('vegetable')">+ Add item</button>
+          </div>
+          <div class="sc-items" id="sc-vegetable">
+            <div class="sc-item-row sc-header-row">
+              <span>Item name</span><span>Qty</span><span>Unit</span><span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Snacks -->
+        <div class="sc-category">
+          <div class="sc-cat-head">
+            <span class="sc-cat-icon">🍿</span><span class="sc-cat-title">Snacks</span>
+            <button class="sc-add-btn" onclick="addStaffItem('snacks')">+ Add item</button>
+          </div>
+          <div class="sc-items" id="sc-snacks">
+            <div class="sc-item-row sc-header-row">
+              <span>Item name</span><span>Qty</span><span>Unit</span><span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Drinks -->
+        <div class="sc-category">
+          <div class="sc-cat-head">
+            <span class="sc-cat-icon">🥤</span><span class="sc-cat-title">Drinks</span>
+            <button class="sc-add-btn" onclick="addStaffItem('drinks')">+ Add item</button>
+          </div>
+          <div class="sc-items" id="sc-drinks">
+            <div class="sc-item-row sc-header-row">
+              <span>Item name</span><span>Qty</span><span>Unit</span><span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dessert -->
+        <div class="sc-category">
+          <div class="sc-cat-head">
+            <span class="sc-cat-icon">🍮</span><span class="sc-cat-title">Dessert</span>
+            <button class="sc-add-btn" onclick="addStaffItem('dessert')">+ Add item</button>
+          </div>
+          <div class="sc-items" id="sc-dessert">
+            <div class="sc-item-row sc-header-row">
+              <span>Item name</span><span>Qty</span><span>Unit</span><span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Disposable Items -->
+        <div class="sc-category">
+          <div class="sc-cat-head">
+            <span class="sc-cat-icon">🧴</span><span class="sc-cat-title">Disposable Items</span>
+            <button class="sc-add-btn" onclick="addStaffItem('disposable')">+ Add item</button>
+          </div>
+          <div class="sc-items" id="sc-disposable">
+            <div class="sc-item-row sc-header-row">
+              <span>Item name</span><span>Qty</span><span>Unit</span><span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sc-footer">
+          <div id="sc-last-saved" class="sc-last-saved"></div>
+          <button class="btn-primary sc-save-btn" onclick="saveStaffCount()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            Save Stock Count
+          </button>
+        </div>
+      </div>
+    </section>
   </main>
 
   <!-- MODALS -->
@@ -929,6 +1229,7 @@ function navigateTo(page) {
     recipes: 'Recipe Costs',
     usage: 'Usage Logs',
     orders: 'Purchase Orders',
+    staffcount: 'Staff Stock Count',
   };
   document.getElementById('page-title').textContent = titles[page] || page;
 }
@@ -1572,7 +1873,7 @@ function closeSettings(e) {
 function showAlert(msg, type = 'warn') {
   const bar = document.getElementById('alert-bar');
   bar.textContent = msg;
-  bar.classList.remove('hidden');
+  bar.className = 'alert-bar ' + (type === 'success' ? 'success' : '');
 }
 
 function hideAlert() {
@@ -1651,6 +1952,120 @@ function renderMockData() {
 
   renderAll();
 }
+
+// ===== STAFF COUNT =====
+const STAFF_CATEGORIES = ['meat','vegetable','snacks','drinks','dessert','disposable'];
+const UNIT_OPTIONS = ['KG','Gram','E/A','Bottle','Pack','Box','Bag','Can','Litre','Piece','Bundle','Tray'];
+let staffName = localStorage.getItem('staffName') || '';
+
+function initStaffCount() {
+  if (staffName) {
+    document.getElementById('staff-name-input').value = staffName;
+    showStaffNameConfirmed(staffName);
+  }
+  // Add default starter rows for each category
+  STAFF_CATEGORIES.forEach(cat => {
+    const container = document.getElementById('sc-' + cat);
+    if (container && container.querySelectorAll('.sc-data-row').length === 0) {
+      addStaffItem(cat);
+    }
+  });
+}
+
+function setStaffName() {
+  const val = document.getElementById('staff-name-input').value.trim();
+  if (!val) { document.getElementById('staff-name-input').style.borderColor = 'var(--danger)'; return; }
+  staffName = val;
+  localStorage.setItem('staffName', val);
+  showStaffNameConfirmed(val);
+}
+
+function changeStaffName() {
+  document.getElementById('staff-name-display').classList.add('hidden');
+  document.getElementById('staff-name-change').classList.add('hidden');
+  document.getElementById('staff-name-input').classList.remove('hidden');
+  document.querySelector('.staff-name-prompt .btn-primary').classList.remove('hidden');
+  document.getElementById('staff-name-input').focus();
+}
+
+function showStaffNameConfirmed(name) {
+  document.getElementById('staff-name-display').textContent = name;
+  document.getElementById('staff-name-display').classList.remove('hidden');
+  document.getElementById('staff-name-change').classList.remove('hidden');
+  document.getElementById('staff-name-input').classList.add('hidden');
+  document.querySelector('.staff-name-prompt .btn-primary').classList.add('hidden');
+}
+
+function addStaffItem(category) {
+  const container = document.getElementById('sc-' + category);
+  if (!container) return;
+  const row = document.createElement('div');
+  row.className = 'sc-item-row sc-data-row';
+  const unitOpts = UNIT_OPTIONS.map(u => `<option>${u}</option>`).join('');
+  row.innerHTML = `
+    <input type="text" class="sc-item-name" placeholder="Item name…" />
+    <input type="number" class="sc-item-qty" placeholder="0" min="0" step="0.01" />
+    <select class="sc-item-unit">${unitOpts}</select>
+    <button class="sc-remove-btn" onclick="removeStaffItem(this)" title="Remove">✕</button>
+  `;
+  container.appendChild(row);
+  row.querySelector('.sc-item-name').focus();
+}
+
+function removeStaffItem(btn) {
+  const row = btn.closest('.sc-data-row');
+  if (row) row.remove();
+}
+
+async function saveStaffCount() {
+  if (!staffName) {
+    showAlert('Please enter your name before saving.', 'warn');
+    document.getElementById('staff-name-input').focus();
+    navigateTo('staffcount');
+    return;
+  }
+
+  const now = new Date();
+  const datetime = now.toLocaleDateString('en-GB') + ' ' + now.toLocaleTimeString('en-GB', {hour:'2-digit',minute:'2-digit'});
+  const records = [];
+
+  STAFF_CATEGORIES.forEach(cat => {
+    const container = document.getElementById('sc-' + cat);
+    if (!container) return;
+    container.querySelectorAll('.sc-data-row').forEach(row => {
+      const name = row.querySelector('.sc-item-name').value.trim();
+      const qty  = row.querySelector('.sc-item-qty').value.trim();
+      const unit = row.querySelector('.sc-item-unit').value;
+      if (name || qty) {
+        records.push({ category: cat, name: name || '—', qty: qty || '0', unit, staff: staffName, datetime });
+      }
+    });
+  });
+
+  if (records.length === 0) {
+    showAlert('Nothing to save — please fill in at least one item.', 'warn');
+    return;
+  }
+
+  const saveBtn = document.querySelector('.sc-save-btn');
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'Saving…';
+
+  try {
+    await apiPost('addStaffCount', { records });
+  } catch(_) {}
+
+  saveBtn.disabled = false;
+  saveBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Save Stock Count`;
+
+  document.getElementById('sc-last-saved').innerHTML =
+    `<span class="sc-saved-ok">✅ Saved by <strong>${escHtml(staffName)}</strong> at ${datetime} &nbsp;·&nbsp; ${records.length} item(s)</span>`;
+
+  // Show success alert
+  showAlert(`✅ Stock count saved by ${staffName} at ${datetime}`, 'success');
+  setTimeout(hideAlert, 4000);
+}
+
 </script>
 </body>
 </html>

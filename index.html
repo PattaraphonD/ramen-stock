@@ -44,6 +44,8 @@ body {
   display: flex;
   font-size: 14px;
   line-height: 1.5;
+  overflow: hidden;
+  height: 100vh;
 }
 
 /* ===== SIDEBAR ===== */
@@ -149,6 +151,8 @@ body {
   min-width: 0;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  height: 100vh;
 }
 
 /* ===== TOPBAR ===== */
@@ -1399,6 +1403,7 @@ function navigateTo(page) {
 
   document.querySelector(`[data-page="${page}"]`).classList.add('active');
   document.getElementById(`page-${page}`).classList.add('active');
+  document.querySelector('.main').scrollTop = 0;
 
   const titles = {
     dashboard: 'Dashboard',
@@ -1410,6 +1415,8 @@ function navigateTo(page) {
     history: 'History',
   };
   document.getElementById('page-title').textContent = titles[page] || page;
+  if (page === 'staffcount') initStaffCount();
+  if (page === 'history') loadHistory();
 }
 
 // ===== API CALLS =====
@@ -2304,10 +2311,39 @@ function lockOwner() {
 // ===== HISTORY =====
 let HISTORY_DATA = [];
 
-function loadHistory() {
-  // Build from STATE data already synced + localStorage
+async function loadHistory() {
+  // Always load from localStorage first so it shows immediately
   HISTORY_DATA = JSON.parse(localStorage.getItem('historyLog') || '[]');
   renderHistory(HISTORY_DATA);
+
+  // Also pull from Google Sheets StaffCount tab if connected
+  if (!CONFIG.scriptUrl) return;
+  try {
+    const body = document.getElementById('history-body');
+    body.innerHTML = '<tr><td colspan="7" class="empty-state" style="color:var(--accent2)">Fetching from Google Sheets…</td></tr>';
+    const res = await apiFetch('getStaffCount');
+    if (res && res.data && res.data.length > 0) {
+      // Merge sheets data into HISTORY_DATA (sheets is source of truth)
+      const sheetRecords = res.data.map(r => ({
+        datetime: r.datetime || r[0] || '',
+        staff:    r.staff    || r[1] || '—',
+        category: r.category || r[2] || '—',
+        item:     r.item || r.name || r[3] || '—',
+        qty:      String(r.qty  || r[4] || '—'),
+        unit:     r.unit     || r[5] || '—',
+        type:     'staffcount',
+      }));
+      // Combine: sheet records first (newest entries from sheet), then local
+      const localOnly = HISTORY_DATA.filter(l =>
+        !sheetRecords.some(s => s.datetime === l.datetime && s.item === l.item)
+      );
+      HISTORY_DATA = [...sheetRecords.reverse(), ...localOnly];
+      localStorage.setItem('historyLog', JSON.stringify(HISTORY_DATA.slice(0, 500)));
+    }
+    renderHistory(HISTORY_DATA);
+  } catch(e) {
+    renderHistory(HISTORY_DATA);
+  }
 }
 
 function addToHistory(type, staff, category, item, qty, unit) {

@@ -939,20 +939,28 @@ async function apiFetch(action, payload = {}) {
   const url = new URL(CONFIG.scriptUrl);
   url.searchParams.set('action', action);
   Object.entries(payload).forEach(([k, v]) => url.searchParams.set(k, v));
-  const res = await fetch(url.toString());
+  const res = await fetch(url.toString(), {
+    redirect: 'follow',
+    method: 'GET',
+  });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return res.json();
+  const text = await res.text();
+  try { return JSON.parse(text); } catch(e) { throw new Error('Invalid JSON from Apps Script: ' + text.slice(0,100)); }
 }
 
 async function apiPost(action, data) {
   if (!CONFIG.scriptUrl) throw new Error('No Apps Script URL configured');
-  const res = await fetch(CONFIG.scriptUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ action, ...data }),
-    mode: 'no-cors',
-  });
-  return { ok: true };
+  try {
+    const res = await fetch(CONFIG.scriptUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ action, ...data }),
+      redirect: 'follow',
+    });
+    return { ok: true };
+  } catch(e) {
+    return { ok: false };
+  }
 }
 
 // ===== SYNC =====

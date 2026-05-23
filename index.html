@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ramen Stock Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="brand">
+      <span class="brand-icon">🍜</span>
+      <div>
+        <div class="brand-name">Ramen Stock</div>
+        <div class="brand-sub">Kitchen Manager</div>
+      </div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#" class="nav-item active" data-page="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a></li>
+      <li><a href="#" class="nav-item" data-page="inventory">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        Inventory
+      </a></li>
+      <li><a href="#" class="nav-item" data-page="recipes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M12 8v4l3 3"/></svg>
+        Recipe Costs
+      </a></li>
+      <li><a href="#" class="nav-item" data-page="usage">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Usage Logs
+      </a></li>
+      <li><a href="#" class="nav-item" data-page="orders">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        Purchase Orders
+      </a></li>
+    </ul>
+    <div class="sidebar-footer">
+      <button class="btn-settings" onclick="openSettings()">⚙ Settings</button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <h1 id="page-title">Dashboard</h1>
+        <span id="page-date" class="page-date"></span>
+      </div>
+      <div class="topbar-right">
+        <button class="btn-primary" id="sync-btn" onclick="syncData()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          Sync Sheets
+        </button>
+      </div>
+    </header>
+
+    <!-- Alert bar -->
+    <div id="alert-bar" class="alert-bar hidden"></div>
+
+    <!-- DASHBOARD PAGE -->
+    <section id="page-dashboard" class="page active">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total Ingredients</div>
+          <div class="stat-value" id="stat-total">—</div>
+          <div class="stat-sub">tracked items</div>
+        </div>
+        <div class="stat-card stat-warn">
+          <div class="stat-label">Low Stock</div>
+          <div class="stat-value" id="stat-low">—</div>
+          <div class="stat-sub">need reorder</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Avg Bowl Cost</div>
+          <div class="stat-value" id="stat-cost">—</div>
+          <div class="stat-sub">across recipes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Pending Orders</div>
+          <div class="stat-value" id="stat-orders">—</div>
+          <div class="stat-sub">purchase orders</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-head">
+            <h3>Low Stock Alerts</h3>
+            <span class="badge badge-warn" id="low-stock-count">0</span>
+          </div>
+          <div id="low-stock-list" class="alert-list">
+            <div class="empty-state">Loading...</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Recent Usage</h3></div>
+          <div id="recent-usage" class="alert-list">
+            <div class="empty-state">Loading...</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INVENTORY PAGE -->
+    <section id="page-inventory" class="page">
+      <div class="toolbar">
+        <input type="text" id="inv-search" class="search-input" placeholder="Search ingredients…" oninput="filterInventory(this.value)" />
+        <select id="inv-category" class="select-input" onchange="filterInventory()">
+          <option value="">All Categories</option>
+          <option>Broth</option>
+          <option>Noodles</option>
+          <option>Toppings</option>
+          <option>Protein</option>
+          <option>Seasoning</option>
+          <option>Vegetables</option>
+          <option>Other</option>
+        </select>
+        <button class="btn-primary" onclick="openAddIngredient()">+ Add Ingredient</button>
+      </div>
+      <div class="card">
+        <table class="data-table" id="inventory-table">
+          <thead>
+            <tr>
+              <th>Ingredient</th>
+              <th>Category</th>
+              <th>In Stock</th>
+              <th>Min. Level</th>
+              <th>Unit</th>
+              <th>Unit Cost</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="inventory-body">
+            <tr><td colspan="8" class="empty-state">Loading inventory…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- RECIPES PAGE -->
+    <section id="page-recipes" class="page">
+      <div class="toolbar">
+        <button class="btn-primary" onclick="openAddRecipe()">+ Add Recipe</button>
+      </div>
+      <div id="recipes-grid" class="recipes-grid">
+        <div class="empty-state">Loading recipes…</div>
+      </div>
+    </section>
+
+    <!-- USAGE LOGS PAGE -->
+    <section id="page-usage" class="page">
+      <div class="toolbar">
+        <input type="date" id="usage-date" class="search-input" style="max-width:180px"/>
+        <select id="usage-recipe" class="select-input">
+          <option value="">All Recipes</option>
+        </select>
+        <button class="btn-primary" onclick="openLogUsage()">+ Log Usage</button>
+      </div>
+      <div class="card">
+        <table class="data-table">
+          <thead>
+            <tr><th>Date</th><th>Recipe</th><th>Servings</th><th>Ingredients Used</th><th>Cost</th></tr>
+          </thead>
+          <tbody id="usage-body">
+            <tr><td colspan="5" class="empty-state">Loading usage logs…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- PURCHASE ORDERS PAGE -->
+    <section id="page-orders" class="page">
+      <div class="toolbar">
+        <select id="order-status" class="select-input" onchange="filterOrders()">
+          <option value="">All Status</option>
+          <option>Pending</option>
+          <option>Ordered</option>
+          <option>Received</option>
+        </select>
+        <button class="btn-primary" onclick="openCreateOrder()">+ Create Order</button>
+      </div>
+      <div id="orders-list" class="orders-list">
+        <div class="empty-state">Loading orders…</div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODALS -->
+  <div id="modal-overlay" class="modal-overlay hidden" onclick="closeModal(event)">
+    <div class="modal" id="modal-box">
+      <div class="modal-head">
+        <h2 id="modal-title">Modal</h2>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div id="modal-body" class="modal-body"></div>
+      <div class="modal-footer">
+        <button class="btn-ghost" onclick="closeModal()">Cancel</button>
+        <button class="btn-primary" id="modal-save-btn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settings-overlay" class="modal-overlay hidden" onclick="closeSettings(event)">
+    <div class="modal">
+      <div class="modal-head">
+        <h2>Settings</h2>
+        <button class="modal-close" onclick="closeSettings()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Google Apps Script URL</label>
+          <input type="url" id="script-url" class="form-input" placeholder="https://script.google.com/macros/s/..." />
+          <small>Deploy your Apps Script as Web App and paste the URL here.</small>
+        </div>
+        <div class="form-group">
+          <label>Shop Name</label>
+          <input type="text" id="shop-name" class="form-input" placeholder="My Ramen Shop" />
+        </div>
+        <div class="form-group">
+          <label>Currency Symbol</label>
+          <input type="text" id="currency" class="form-input" placeholder="฿" style="max-width:80px" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-ghost" onclick="closeSettings()">Cancel</button>
+        <button class="btn-primary" onclick="saveSettings()">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
